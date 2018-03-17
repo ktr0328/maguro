@@ -21,14 +21,16 @@ function createWindow () {
    */
   mainWindow = new BrowserWindow({
     useContentSize: true,
-    // transparent: true,
+    transparent: true,
+    alwaysOnTop: true,
     hasShadow: false,
     show: false
   })
   mainWindow.maximize()
-  // mainWindow.setIgnoreMouseEvents(true)
+  mainWindow.setIgnoreMouseEvents(true)
   mainWindow.loadURL(winURL)
   mainWindow.showInactive()
+
   mainWindow.on('closed', () => {
     mainWindow = null
   })

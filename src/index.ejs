@@ -4,6 +4,14 @@
     <meta charset="utf-8">
     <title>maguro</title>
     <% if (htmlWebpackPlugin.options.nodeModules) { %>
+      <style>
+        html, body {
+          padding: 0;
+          margin: 0;
+          height: 100%;
+          width: 100%;
+        }
+      </style>
       <!-- Add `node_modules/` to global paths so `require` works properly in development -->
       <script>
         require('module').globalPaths.push('<%= htmlWebpackPlugin.options.nodeModules.replace(/\\/g, '\\\\') %>')
