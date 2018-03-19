@@ -84,6 +84,11 @@ export default {
         this.objects.forEach(e => {
           e.speed += 1
         })
+      } else if (code === 13) {
+        this.objects.forEach(e => {
+          e.x = Math.random() * this.body.width
+          e.y = Math.random() * this.body.height
+        })
       }
     })
 
