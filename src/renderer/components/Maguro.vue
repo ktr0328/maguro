@@ -17,12 +17,16 @@ export default {
           num: 15,
           speed: 2
         }
+      },
+      body: {
+        width: document.body.clientWidth,
+        height: document.body.clientHeight
       }
     }
   },
   methods: {
     sketch: function (p) {
-      p.setup = () => p.createCanvas(document.body.clientWidth, document.body.clientHeight)
+      p.setup = () => p.createCanvas(this.body.width, this.body.height)
       p.preload = () => {
         this.img = p.loadImage('src/renderer/assets/maguro.png')
       }
@@ -34,12 +38,24 @@ export default {
 
         p.fill(0)
         p.imageMode(p.CENTER)
+
         this.objects.forEach(e => {
           e.x = e.x + e.speed
-          if (e.x < 0 - this.img.width / 5 / 2) e.x = document.body.clientWidth + this.img.width / 5 / 2
+          if (e.x < 0 - this.img.width / 5 / 2) {
+            e.x = this.body.width + this.img.width / 5 / 2
+            e.y = this.body.height * Math.random()
+          }
           p.image(this.img, e.x, e.y, this.img.width / 5, this.img.height / 5)
         })
       }
+    },
+    createRandomSpeed: function () {
+      return -4 * Math.random() - 1
+    },
+    resetSpeedAll: function () {
+      this.objects.forEach(e => {
+        e.speed = this.createRandomSpeed()
+      })
     }
   },
   mounted: function () {
@@ -47,14 +63,29 @@ export default {
       const objs = []
       for (let i = 0; i < this.config.maguro.num; i++) {
         const obj = {
-          x: document.body.clientWidth * Math.random(),
-          y: document.body.clientHeight * Math.random(),
+          x: this.body.width * Math.random(),
+          y: this.body.height * Math.random(),
           speed: -4 * Math.random() - 1
         }
         objs.push(obj)
       }
       return objs
     })()
+
+    document.addEventListener('keydown', e => {
+      const code = e.keyCode
+      if (code === 32) {
+        this.resetSpeedAll()
+      } else if (code === 37) {
+        this.objects.forEach(e => {
+          e.speed += -1
+        })
+      } else if (code === 39) {
+        this.objects.forEach(e => {
+          e.speed += 1
+        })
+      }
+    })
 
     // eslint-disable-next-line no-new
     new P5(this.sketch)
